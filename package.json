@@ -1,0 +1,21 @@
+{
+  "name": "fastify_rest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ken",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "fastify": "^3.14.2",
+    "fastify-plugin": "^3.0.0",
+    "pg": "^8.6.0"
+  }
+}
