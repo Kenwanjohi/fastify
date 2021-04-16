@@ -1,7 +1,9 @@
+const { fetchAllTasks } = require('./schemas')
 async function routes(fastify, options) {
     
     const client = fastify.db.client
-    fastify.get('/', async function (request, reply) {
+
+    fastify.get('/', {schema: fetchAllTasks}, async function (request, reply) {
         try {
             const {rows} = await client.query('select * from tasks')
             console.log(rows)
