@@ -1,16 +1,14 @@
 const { v4: uuidv4 } = require('uuid');
 const { allTodos, addTodo } = require('./schemas')
 async function routes(fastify, options) {
-    
     const client = fastify.db.client
-
     fastify.get('/', {schema: allTodos}, async function (request, reply) {
         try {
-            const {rows} = await client.query('select * from tasks')
+            const {rows} = await client.query('SELECT * FROM todos')
             console.log(rows)
-            reply.send(rows)
+            return rows
         } catch(err) {
-            console.error(err)
+            throw new Error(err)
         }
     })
 
@@ -20,7 +18,7 @@ async function routes(fastify, options) {
         const done = false
         createdAt = new Date().toISOString()
         const query = {
-            text: `INSERT INTO tasks (id, task, "createdAt", category, important, "dueDate", done, "myDay")
+            text: `INSERT INTO todos (id, task, "createdAt", category, important, "dueDate", done, "myDay")
                     VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
             values: [id, task, createdAt, category, important, dueDate, done, myDay],
             }

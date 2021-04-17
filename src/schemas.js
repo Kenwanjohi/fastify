@@ -3,21 +3,20 @@ const allTodos = {
         200: {
             type: 'array',
             items: {
+                type: 'object',
+                required: ['id', 'name', 'createdAt', 'important', 'dueDate', 'done'],
                 properties: {
                     id: {type: 'string',  format: 'uuid'},                                                              
-                    task: {type: 'string'},                                           
-                    createdAt:{type: 'string',format: "date-time"},
-                    category: {type: 'string'},                    
+                    name: {type: 'string'},                                           
+                    createdAt:{type: 'string',format: "date-time"},                  
                     important: {type: 'boolean'},
                     dueDate: {type: 'string',format: "date-time"},
                     done: {type: 'boolean'},
-                    myDay: {type: 'boolean'}
                 }
             }
         }
     }
 }
-
 const addTodo = {
     body: {
         type: 'object',
@@ -27,7 +26,6 @@ const addTodo = {
             category: {type: 'string'},
             dueDate: {type: 'string', format: 'date-time', nullable: true, default: null},
             important: {type: 'boolean', default: false},
-            myDay: {type: 'boolean', default: false},
         }
     },
     response: {
@@ -39,6 +37,4 @@ const addTodo = {
         }
     }
 }
-
-
 module.exports = {allTodos, addTodo}
