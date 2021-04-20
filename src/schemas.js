@@ -20,10 +20,9 @@ const allTodos = {
 const addTodo = {
     body: {
         type: 'object',
-        required: ['task', 'category'],
+        required: ['name'],
         properties: {
-            task: {type: 'string', default: 'tasks'},
-            category: {type: 'string'},
+            name: {type: 'string',},
             dueDate: {type: 'string', format: 'date-time', nullable: true, default: null},
             important: {type: 'boolean', default: false},
         }
@@ -36,5 +35,22 @@ const addTodo = {
             }
         }
     }
+
 }
-module.exports = {allTodos, addTodo}
+const updateTodo = {
+    body: {
+        type: 'object',
+        properties: {
+            dueDate: {type: 'string', format: 'date-time'},
+            important: {type: 'boolean'},
+            done: {type: 'boolean'}
+        }
+    },
+    params: {
+        type: 'object',
+        properties: {
+          id: { type: 'string', format: 'uuid' }
+        }
+      }
+}
+module.exports = {allTodos, addTodo, updateTodo}

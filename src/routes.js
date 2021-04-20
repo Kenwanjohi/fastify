@@ -1,5 +1,5 @@
 const { v4: uuidv4 } = require('uuid');
-const { allTodos, addTodo } = require('./schemas')
+const { allTodos, addTodo, updateTodo } = require('./schemas')
 async function routes(fastify, options) {
     const client = fastify.db.client
     fastify.get('/', {schema: allTodos}, async function (request, reply) {
@@ -13,24 +13,43 @@ async function routes(fastify, options) {
     })
 
     fastify.post('/', {schema: addTodo}, async function(request, reply) {
-        const {task, category, important, myDay, dueDate} = request.body
+        const {name, important, dueDate} = request.body
         const id = uuidv4()
         const done = false
         createdAt = new Date().toISOString()
         const query = {
-            text: `INSERT INTO todos (id, task, "createdAt", category, important, "dueDate", done, "myDay")
-                    VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-            values: [id, task, createdAt, category, important, dueDate, done, myDay],
+            text: `INSERT INTO todos (id, name, "createdAt", important, "dueDate", done)
+                    VALUES($1, $2, $3, $4, $5, $6 ) RETURNING *`,
+            values: [id, name, createdAt, important, dueDate, done],
             }
         try {
             const {rows} = await client.query(query)
             console.log(rows[0])
-            reply.status(201).send({created: 'true'})
+            reply.code(201)
+            return {created: true}
         } catch (err) {
-            console.error(err)
-            return
+            throw new Error(err)
         }
         
     })
+    fastify.patch('/:id',{schema: updateTodo}, async function (request, reply) {
+        const id = request.params.id
+        const {important, dueDate, done} = request.body
+        const query = {
+            text:  `UPDATE todos SET 
+                    important = COALESCE($1, important), 
+                    "dueDate" = COALESCE($2, "dueDate"), 
+                    done = COALESCE($3, done) 
+                    WHERE id = $4 RETURNING *`,
+            values : [important, dueDate, done, id]
+        }
+        try {
+            const {rows} = await client.query(query)
+            console.log(rows[0])
+            reply.code(204)
+        } catch (err) {
+            throw new Error(err)
+        }
+    } )
 }
 module.exports= routes
