@@ -6,7 +6,7 @@ const client = new Client({
     password:process.env.PASSWORD,
     host: 'localhost',
     port: 5432,
-    database: process.env.DATABASE
+    database: 'todos'
 })
 async function dbconnector(fastify, options) {
     try {
