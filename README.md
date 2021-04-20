@@ -1,5 +1,6 @@
 ### fastify-rest
 **Fastify & PostgreSQL REST API**
+
 To run this project on your computer:
 * clone the repo
 * run npm install.
