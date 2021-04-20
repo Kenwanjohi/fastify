@@ -51,6 +51,15 @@ const updateTodo = {
         properties: {
           id: { type: 'string', format: 'uuid' }
         }
-      }
+    }
 }
-module.exports = {allTodos, addTodo, updateTodo}
+
+const deleteTodo = {
+    params: {
+        type: 'object',
+        properties: {
+            id: {type: 'string', format: 'uuid'}
+        }
+    }
+}
+module.exports = {allTodos, addTodo, updateTodo, deleteTodo}

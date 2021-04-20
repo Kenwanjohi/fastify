@@ -1,5 +1,5 @@
 const { v4: uuidv4 } = require('uuid');
-const { allTodos, addTodo, updateTodo } = require('./schemas')
+const { allTodos, addTodo, updateTodo, deleteTodo} = require('./schemas')
 async function routes(fastify, options) {
     const client = fastify.db.client
     fastify.get('/', {schema: allTodos}, async function (request, reply) {
@@ -51,5 +51,15 @@ async function routes(fastify, options) {
             throw new Error(err)
         }
     } )
+    fastify.delete('/:id', {schema: deleteTodo}, async function(request, reply) {
+        console.log(request.params)
+        try {
+            const {rows} = await client.query('DELETE FROM todos WHERE id = $1 RETURNING *', [request.params.id])
+            console.log(rows[0])
+            reply.code(204)
+        } catch(err) {
+            throw new Error(err)
+        }
+    })
 }
 module.exports= routes
